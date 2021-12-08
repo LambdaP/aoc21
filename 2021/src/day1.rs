@@ -1,7 +1,7 @@
 use std::io;
 use std::error;
 
-fn main() {
+pub fn main() {
     if let Ok(numbers) = parse_lines() {
         let n = ninc(&numbers);
         println!("{}", n);

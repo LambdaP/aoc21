@@ -2,6 +2,8 @@ use std::io;
 use std::io::Read;
 use std::error;
 use std::str::FromStr;
+use std::str;
+use anyhow::Result;
 
 #[derive(PartialEq, Debug)]
 enum Heading {
@@ -21,7 +23,7 @@ impl FromStr for Heading {
                     .expect("no field separator")
                     .parse::<usize>()?;
 
-        return match s0 as &str {
+        match s0 as &str {
             "up"      => Ok(Heading::U(x)),
             "down"    => Ok(Heading::D(x)),
             "forward" => Ok(Heading::F(x)),
@@ -30,40 +32,77 @@ impl FromStr for Heading {
     }
 }
 
-fn main() -> io::Result<()> {
-    let mut input = String::new();
-    io::stdin().read_to_string(&mut input)?;
+// fn main() -> io::Result<()> {
+//     let mut input = String::new();
+//     io::stdin().read_to_string(&mut input)?;
 
-    let headings = input
-                    .lines()
-                    .filter_map(|l| l.parse::<Heading>().ok());
+//     let headings = input
+//                     .lines()
+//                     .filter_map(|l| l.parse::<Heading>().ok());
+
+//     let mut x: usize = 0;
+//     let mut z: usize = 0;
+
+//     for h in headings.clone() {
+//         match h {
+//             Heading::U(n) => { z -= n }
+//             Heading::D(n) => { z += n }
+//             Heading::F(n) => { x += n }
+//         }
+//     }
+
+//     println!("{}", x*z);
+
+//     let mut x: usize = 0;
+//     let mut z: usize = 0;
+//     let mut aim: usize = 0;
+
+//     for h in headings {
+//         match h {
+//             Heading::U(n) => { aim -= n }
+//             Heading::D(n) => { aim += n }
+//             Heading::F(n) => { x += n; z += aim * n }
+//         }
+//     }
+
+//     println!("{}", x*z);
+
+//     Ok(())
+// }
+
+pub fn part1(lines: &[&[u8]]) -> Result<usize> {
+    let headings = lines.iter()
+            .filter_map(|l| str::from_utf8(l).ok()?.parse::<Heading>().ok());
 
     let mut x: usize = 0;
     let mut z: usize = 0;
 
-    for h in headings.clone() {
-        match h {
+    for h in headings {
+        match &h {
             Heading::U(n) => { z -= n }
             Heading::D(n) => { z += n }
             Heading::F(n) => { x += n }
         }
     }
 
-    println!("{}", x*z);
+    Ok(x*z)
+}
+
+pub fn part2(lines: &[&[u8]]) -> Result<usize> {
+    let headings = lines.iter()
+            .filter_map(|l| str::from_utf8(l).ok()?.parse::<Heading>().ok());
 
     let mut x: usize = 0;
     let mut z: usize = 0;
     let mut aim: usize = 0;
 
     for h in headings {
-        match h {
+        match &h {
             Heading::U(n) => { aim -= n }
             Heading::D(n) => { aim += n }
             Heading::F(n) => { x += n; z += aim * n }
         }
     }
 
-    println!("{}", x*z);
-
-    Ok(())
+    Ok(x*z)
 }
