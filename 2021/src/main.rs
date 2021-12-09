@@ -7,6 +7,7 @@ use anyhow::Result;
 mod day1;
 mod day2;
 mod day3;
+mod day4;
 
 type Solver = fn(&[&[u8]]) -> anyhow::Result<usize>;
 
@@ -17,6 +18,7 @@ fn main() -> Result<()> {
         // "--day1" => (day1::day1, 0),
         "--day2" => (day2::part1, day2::part2),
         "--day3" => (day3::part1, day3::part2),
+        "--day4" => (day4::part1, day4::part2),
         _      => { eprintln!("error: {} is not a valid option", day); panic!() }
     };
 
