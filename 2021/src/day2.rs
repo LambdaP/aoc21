@@ -1,5 +1,3 @@
-use std::io;
-use std::io::Read;
 use std::error;
 use std::str::FromStr;
 use std::str;
@@ -31,44 +29,6 @@ impl FromStr for Heading {
         }
     }
 }
-
-// fn main() -> io::Result<()> {
-//     let mut input = String::new();
-//     io::stdin().read_to_string(&mut input)?;
-
-//     let headings = input
-//                     .lines()
-//                     .filter_map(|l| l.parse::<Heading>().ok());
-
-//     let mut x: usize = 0;
-//     let mut z: usize = 0;
-
-//     for h in headings.clone() {
-//         match h {
-//             Heading::U(n) => { z -= n }
-//             Heading::D(n) => { z += n }
-//             Heading::F(n) => { x += n }
-//         }
-//     }
-
-//     println!("{}", x*z);
-
-//     let mut x: usize = 0;
-//     let mut z: usize = 0;
-//     let mut aim: usize = 0;
-
-//     for h in headings {
-//         match h {
-//             Heading::U(n) => { aim -= n }
-//             Heading::D(n) => { aim += n }
-//             Heading::F(n) => { x += n; z += aim * n }
-//         }
-//     }
-
-//     println!("{}", x*z);
-
-//     Ok(())
-// }
 
 pub fn part1(lines: &[&[u8]]) -> Result<usize> {
     let headings = lines.iter()

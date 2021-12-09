@@ -1,6 +1,4 @@
 use std::str;
-// use std::num::ParseIntError;
-
 use anyhow::Result;
 
 type Bingo = [[u8;5];5];
