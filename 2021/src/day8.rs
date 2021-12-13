@@ -21,8 +21,7 @@ fn w2b(w: &[u8]) -> Result<Digit> {
     Ok(res)
 }
 
-fn count_ones(d: Digit) -> u8 {
-    let mut d = d;
+fn count_ones(mut d: Digit) -> u8 {
     let mut res = 0;
 
     while d > 0 {
@@ -44,7 +43,6 @@ fn decode_signals(scrambled: &[Digit;10]) -> [Digit;10] {
     res[1] = scrambled[0];
     res[7] = scrambled[1];
     res[4] = scrambled[2];
-    res[8] = scrambled[9];
 
     for &d in &scrambled[3..6] {
         if count_ones(d ^ res[1]) == 3 {
@@ -66,12 +64,13 @@ fn decode_signals(scrambled: &[Digit;10]) -> [Digit;10] {
         }
     }
 
+    res[8] = scrambled[9];
+
     res
 }
 
 fn parse_line(line: &[u8]) -> Result<[Digit;14]> {
     let mut res: [Digit;14] = [0;14];
-
 
     for (i, x) in (0..10).zip(line[0..59].split(|&x| x == b' ')) {
         res[i] = w2b(x)?;
@@ -107,20 +106,17 @@ pub fn part2(lines: &[&[u8]]) -> Result<usize> {
             std::mem::transmute(&digits[0])
         };
         let decoded = decode_signals(&signals);
-        let mut output: [u8;4] = [0;4];
 
-        for (i,&x) in digits[10..].iter().enumerate() {
+        let mut output = 0;
+        for &x in &digits[10..] {
+            output *= 10;
             for (j,&d) in decoded.iter().enumerate() {
-                if x == d {
-                    output[i] = j as u8;
-                }
+                if x == d { output += j; }
             }
         }
 
-        res += 1000 * output[0] as usize
-                + 100 * output[1] as usize
-                + 10 * output[2] as usize
-                + output[3] as usize;
+        res += output;
     }
+
     Ok(res)
 }
