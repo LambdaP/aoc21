@@ -11,6 +11,8 @@ mod day4;
 mod day5;
 mod day6;
 mod day7;
+mod day8;
+mod day9;
 
 type Solver = fn(&[&[u8]]) -> anyhow::Result<usize>;
 
@@ -25,24 +27,30 @@ fn main() -> Result<()> {
         "--day5" => (day5::part1, day5::part2),
         "--day6" => (day6::part1, day6::part2),
         "--day7" => (day7::part1, day7::part2),
+        "--day8" => (day8::part1, day8::part2),
+        "--day9" => (day9::part1, day9::part2),
         _      => { eprintln!("error: {} is not a valid option", day); panic!() }
     };
 
     let lines = stdin_bytes()?;
-    let lines: Vec<&[u8]> = lines
-            .split(|x| *x == b'\n')
-            .collect();
+
+    let mut lines = lines
+            .split(|&x| x == b'\n')
+            .collect::<Vec<&[u8]>>();
+
+    if let Some(l) = lines.last() {
+        if l.len() == 0 {
+            lines.pop();
+        }
+    }
+
+    let lines = lines;
 
     let res1 = part1(&lines)?;
     println!("{}", res1);
 
     let res2 = part2(&lines)?;
-
     println!("{}", res2);
-
-    // 0b011001100111
-
-    // println!("{} * {} = {}", 0b011001100111, 0b101010001, 0b011001100111 * 0b101010001);
 
     Ok(())
 }
